@@ -26,7 +26,20 @@ RSpec.describe 'Subscribe a Customer' do
       expect(response).to be_successful
       expect(response.status).to eq(201)
 
-      # expect(customer_subs[:data]).to be_a Hash
+      expect(sub[:data]).to be_a Hash
+      expect(sub[:data][:attributes]).to have_key(:customer_id)
+      expect(sub[:data][:attributes]).to have_key(:tea_id)
+      expect(sub[:data][:attributes]).to have_key(:title)
+      expect(sub[:data][:attributes]).to have_key(:price)
+      expect(sub[:data][:attributes]).to have_key(:status)
+      expect(sub[:data][:attributes]).to have_key(:frequency)
+
+      expect(sub[:data][:attributes][:customer_id]).to be_an(Integer)
+      expect(sub[:data][:attributes][:tea_id]).to be_an(Integer)
+      expect(sub[:data][:attributes][:title]).to be_a(String)
+      expect(sub[:data][:attributes][:price]).to be_a(Float)
+      expect(sub[:data][:attributes][:status]).to eq("active")
+      expect(sub[:data][:attributes][:frequency]).to eq("bimonthly")
     end
   end
 end
