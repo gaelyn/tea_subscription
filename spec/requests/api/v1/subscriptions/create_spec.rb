@@ -20,7 +20,7 @@ RSpec.describe 'Subscribe a Customer' do
         "frequency": 1
       }
 
-      post "/api/v1/customers/#{customer.id}/subscriptions", headers: headers, params: body.to_json
+      post "/api/v1/subscriptions", headers: headers, params: body.to_json
       sub = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to be_successful
