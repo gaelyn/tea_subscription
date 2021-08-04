@@ -97,5 +97,31 @@ RSpec.describe 'Subscribe a Customer' do
 
       expect(sub[:errors]).to eq("You're already subscribed to this tea")
     end
+
+    it 'shows an error if tea does not exist' do
+      customer = create(:customer)
+
+      headers = {
+        'Content-Type': "application/json",
+        'Accept': "application/json"
+      }
+
+      body = {
+        "customer_id": customer.id,
+        "tea_id": 1,
+        "title": "#{customer.first_name}'s Subscription for a tea that doens't exist",
+        "price": 12.05,
+        "status": 0,
+        "frequency": 0
+      }
+
+      post "/api/v1/customers/#{customer.id}/subscriptions", headers: headers, params: body.to_json
+      sub = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(404)
+
+      expect(sub[:errors]).to eq("Cannot find tea")
+    end
   end
 end
