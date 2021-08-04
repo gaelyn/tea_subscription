@@ -18,8 +18,12 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
 
   def update
     sub = Subscription.find(params[:id])
-    sub.update!(status: params[:status].to_i)
-    render json: SubscriptionSerializer.new(sub), status: 200
+    if (params[:status].to_i < 0) || (params[:status].to_i > 1)
+      render json: { errors: "Invalid status" }, status: :bad_request
+    else
+      sub.update!(status: params[:status].to_i)
+      render json: SubscriptionSerializer.new(sub), status: 200
+    end
   end
 
   private
