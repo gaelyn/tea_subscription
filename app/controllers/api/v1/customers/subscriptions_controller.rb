@@ -1,13 +1,13 @@
 class Api::V1::Customers::SubscriptionsController < ApplicationController
+  before_action :set_customer
+
   def index
-    customer = Customer.find(params[:customer_id])
-    render json: SubscriptionSerializer.new(customer.subscriptions)
+    render json: SubscriptionSerializer.new(@customer.subscriptions)
   end
 
   def create
-    customer = Customer.find(params[:customer_id])
-    sub = Subscription.new(subscription_params)
-    if customer.teas.find_by(id: params[:tea_id])
+    sub = @customer.subscriptions.new(subscription_params)
+    if @customer.teas.find_by(id: params[:tea_id])
       render json: { errors: "You're already subscribed to this tea" }, status: :bad_request
     elsif sub.save
       render json: SubscriptionSerializer.new(sub), status: 201
@@ -17,7 +17,7 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
   end
 
   def update
-    sub = Subscription.find(params[:id])
+    sub = @customer.subscriptions.find(params[:id])
     if (params[:status].to_i < 0) || (params[:status].to_i > 1)
       render json: { errors: "Invalid status" }, status: :bad_request
     else
@@ -30,5 +30,9 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
 
   def subscription_params
     params.permit(:customer_id, :tea_id, :title, :price, :status, :frequency)
+  end
+
+  def set_customer
+    @customer = Customer.find_by(id: params[:customer_id])
   end
 end
