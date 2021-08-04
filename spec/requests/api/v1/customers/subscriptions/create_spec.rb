@@ -43,7 +43,7 @@ RSpec.describe 'Subscribe a Customer' do
     end
   end
 
-  describe 'sad paths' do
+  describe 'sad paths/edge cases' do
     it 'can show error if field is missing' do
       customer = create(:customer)
       tea = create(:tea)
@@ -68,6 +68,34 @@ RSpec.describe 'Subscribe a Customer' do
       expect(response.status).to eq(400)
 
       expect(sub[:errors]).to eq("Frequency can't be blank")
+    end
+
+    it 'alerts customer if they are already subscribed to a tea' do
+      customer = create(:customer)
+      tea = create(:tea)
+      create(:subscription, customer_id: customer.id, tea_id: tea.id)
+
+      headers = {
+        'Content-Type': "application/json",
+        'Accept': "application/json"
+      }
+
+      body = {
+        "customer_id": customer.id,
+        "tea_id": tea.id,
+        "title": "#{customer.first_name}'s Subscription for #{tea.name}",
+        "price": 12.05,
+        "status": 0,
+        "frequency": 0
+      }
+
+      post "/api/v1/customers/#{customer.id}/subscriptions", headers: headers, params: body.to_json
+      sub = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+
+      expect(sub[:errors]).to eq("You're already subscribed to this tea")
     end
   end
 end
