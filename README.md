@@ -1,24 +1,25 @@
-# README
+## About
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Table of contents
+[**Versions**](#versions) |
+[**Setup**](#setup) |
+[**Built Using**](#built-using) |
+[**File Structure**](#file-structure) |
+[**Endpoints**](#endpoints) |
+[**Testing**](#testing) |
+[**Developer**](#developer) |
+[**Acknowledgements**](#acknowledgements)
 
-Things you may want to cover:
+## Setup
 
-* Ruby version
+## Built Using
 
-* System dependencies
+## File Structure
 
-* Configuration
+## Endpoints
 
-* Database creation
+## Testing
 
-* Database initialization
+## Developer
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Acknowledgements
