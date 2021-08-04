@@ -9,7 +9,7 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
     if sub.save
       render json: SubscriptionSerializer.new(sub), status: 201
     else
-      render json: { errors: 'Unable to create subscription' }, status: :bad_request
+      render json: { errors: sub.errors.full_messages.to_sentence }, status: :bad_request
     end
   end
 

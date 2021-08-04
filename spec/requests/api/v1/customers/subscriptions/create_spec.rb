@@ -42,4 +42,32 @@ RSpec.describe 'Subscribe a Customer' do
       expect(sub[:data][:attributes][:frequency]).to eq("bimonthly")
     end
   end
+
+  describe 'sad paths' do
+    it 'can show error if field is missing' do
+      customer = create(:customer)
+      tea = create(:tea)
+
+      headers = {
+        'Content-Type': "application/json",
+        'Accept': "application/json"
+      }
+
+      body = {
+        "customer_id": customer.id,
+        "tea_id": tea.id,
+        "title": "#{customer.first_name}'s Subscription for #{tea.name}",
+        "price": 12.05,
+        "status": 0
+      }
+
+      post "/api/v1/customers/#{customer.id}/subscriptions", headers: headers, params: body.to_json
+      sub = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+
+      expect(sub[:errors]).to eq("Frequency can't be blank")
+    end
+  end
 end
