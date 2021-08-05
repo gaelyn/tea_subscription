@@ -4,7 +4,7 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
 
   def index
     if @customer.subscriptions.count == 0
-      render json: { message: "No subscriptions found" }, status: 200
+      render json: { message: "No subscriptions found" }, status: :ok
     else
       render json: SubscriptionSerializer.new(@customer.subscriptions)
     end
@@ -15,7 +15,7 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
     if @customer.teas.find_by(id: params[:tea_id])
       render json: { errors: "You're already subscribed to this tea" }, status: :bad_request
     elsif sub.save
-      render json: SubscriptionSerializer.new(sub), status: 201
+      render json: SubscriptionSerializer.new(sub), status: :created
     else
       render json: { errors: sub.errors.full_messages.to_sentence }, status: :bad_request
     end
@@ -27,7 +27,7 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
       render json: { errors: "Invalid status" }, status: :bad_request
     else
       sub.update!(status: params[:status].to_i)
-      render json: SubscriptionSerializer.new(sub), status: 200
+      render json: SubscriptionSerializer.new(sub), status: :ok
     end
   end
 
