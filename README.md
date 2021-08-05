@@ -1,6 +1,6 @@
 ## About
-A RESTful Rails API for a Tea Subscription Service.
-![Image](https://media.giphy.com/media/WPO1IoXaFIVuE/giphy.gif)  
+A RESTful Rails API for a Tea Subscription Service.  
+![Image](https://media.giphy.com/media/WPO1IoXaFIVuE/giphy.gif)    
 [via GIPHY](https://giphy.com/embed/WPO1IoXaFIVuE)
 
 ## Table of contents
