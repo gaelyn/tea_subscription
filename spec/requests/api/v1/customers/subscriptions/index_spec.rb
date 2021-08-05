@@ -4,9 +4,11 @@ RSpec.describe 'See Customer Subscriptions' do
   describe 'happy paths' do
     it "can show all subscriptions for a customer" do
       customer = create(:customer)
-      5.times do
-        create(:subscription, customer_id: customer.id)
-      end
+      sub_1 = create(:subscription, status: 0, customer_id: customer.id)
+      sub_2 = create(:subscription, status: 0, customer_id: customer.id)
+      sub_3 = create(:subscription, status: 1, customer_id: customer.id)
+      sub_4 = create(:subscription, status: 0, customer_id: customer.id)
+      sub_5 = create(:subscription, status: 1, customer_id: customer.id)
 
       get "/api/v1/customers/#{customer.id}/subscriptions"
       subs = JSON.parse(response.body, symbolize_names: true)
@@ -21,6 +23,7 @@ RSpec.describe 'See Customer Subscriptions' do
       expect(subs[:data].first[:attributes]).to have_key(:title)
       expect(subs[:data].first[:attributes]).to have_key(:price)
       expect(subs[:data].first[:attributes]).to have_key(:status)
+      expect(subs[:data][2][:attributes][:status]).to eq("inactive")
       expect(subs[:data].first[:attributes]).to have_key(:frequency)
     end
   end
