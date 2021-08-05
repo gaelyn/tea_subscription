@@ -7,16 +7,13 @@ RSpec.describe 'Subscribe a Customer' do
       tea = create(:tea)
 
       headers = {
-        'Content-Type': "application/json",
-        'Accept': "application/json"
+        'Content-Type': "application/json"
       }
 
       body = {
-        "customer_id": customer.id,
         "tea_id": tea.id,
         "title": "#{customer.first_name}'s Subscription for #{tea.name}",
         "price": 12.05,
-        "status": 0,
         "frequency": 1
       }
 
@@ -49,16 +46,13 @@ RSpec.describe 'Subscribe a Customer' do
       tea = create(:tea)
 
       headers = {
-        'Content-Type': "application/json",
-        'Accept': "application/json"
+        'Content-Type': "application/json"
       }
 
       body = {
-        "customer_id": customer.id,
         "tea_id": tea.id,
         "title": "#{customer.first_name}'s Subscription for #{tea.name}",
         "price": 12.05,
-        "status": 0
       }
 
       post "/api/v1/customers/#{customer.id}/subscriptions", headers: headers, params: body.to_json
@@ -76,16 +70,13 @@ RSpec.describe 'Subscribe a Customer' do
       create(:subscription, customer_id: customer.id, tea_id: tea.id)
 
       headers = {
-        'Content-Type': "application/json",
-        'Accept': "application/json"
+        'Content-Type': "application/json"
       }
 
       body = {
-        "customer_id": customer.id,
         "tea_id": tea.id,
         "title": "#{customer.first_name}'s Subscription for #{tea.name}",
         "price": 12.05,
-        "status": 0,
         "frequency": 0
       }
 
@@ -102,16 +93,13 @@ RSpec.describe 'Subscribe a Customer' do
       customer = create(:customer)
 
       headers = {
-        'Content-Type': "application/json",
-        'Accept': "application/json"
+        'Content-Type': "application/json"
       }
 
       body = {
-        "customer_id": customer.id,
         "tea_id": 1,
         "title": "#{customer.first_name}'s Subscription for a tea that doens't exist",
         "price": 12.05,
-        "status": 0,
         "frequency": 0
       }
 
