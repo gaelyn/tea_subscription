@@ -11,7 +11,15 @@ RSpec.describe 'Update Subscriptions' do
       expect(sub_2.status).to eq("active")
       expect(sub_3.status).to eq("active")
 
-      patch "/api/v1/customers/#{customer.id}/subscriptions/#{sub_2.id}", params: {status: 1}
+      headers = {
+        'Content-Type': "application/json"
+      }
+
+      body = {
+        "status": 1
+      }
+
+      patch "/api/v1/customers/#{customer.id}/subscriptions/#{sub_2.id}", headers: headers, params: body.to_json
       sub = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to be_successful
@@ -28,16 +36,21 @@ RSpec.describe 'Update Subscriptions' do
       sub_1 = create(:subscription, customer_id: customer.id)
       sub_2 = create(:subscription, customer_id: customer.id)
       sub_3 = create(:subscription, customer_id: customer.id)
-      expect(sub_1.status).to eq("active")
-      expect(sub_2.status).to eq("active")
-      expect(sub_3.status).to eq("active")
 
-      patch "/api/v1/customers/#{customer.id}/subscriptions/#{sub_2.id}", params: {status: 3}
+      headers = {
+        'Content-Type': "application/json"
+      }
+
+      body = {
+        "status": 10
+      }
+
+      patch "/api/v1/customers/#{customer.id}/subscriptions/#{sub_2.id}", headers: headers, params: body.to_json
       sub = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to_not be_successful
       expect(response.status).to eq(400)
-      expect(sub[:errors]).to eq("Invalid status")
+      expect(sub[:errors]).to eq("'10' is not a valid status")
     end
   end
 end
