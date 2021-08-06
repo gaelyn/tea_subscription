@@ -25,8 +25,6 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
     sub = @customer.subscriptions.find(params[:id])
     sub.update!(subscription_params)
     render json: SubscriptionSerializer.new(sub), status: :ok
-    rescue StandardError => e
-      render json: { errors: e }, status: :bad_request
   end
 
   private
