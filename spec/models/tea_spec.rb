@@ -12,18 +12,4 @@ RSpec.describe Tea, type: :model do
     it { should validate_presence_of(:temperature) }
     it { should validate_presence_of(:brew_time) }
   end
-
-  before :each do
-
-  end
-
-  describe 'class methods' do
-    describe '#' do
-    end
-  end
-
-  describe 'instance methods' do
-    describe '.' do
-    end
-  end
 end

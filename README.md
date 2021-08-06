@@ -169,7 +169,7 @@ Examples of errors and how they're formatted:
 `POST /api/v1/customers/:customer_id/subscriptions`
 ```
 {
-  "errors": "Tea has already been taken"
+  "errors": "Tea subscription already exists for this tea & customer"
 }
 ```
 - Customer tries to subscribe to a tea that doesn't exist

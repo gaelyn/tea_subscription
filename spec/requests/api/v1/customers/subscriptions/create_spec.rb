@@ -86,7 +86,7 @@ RSpec.describe 'Subscribe a Customer' do
       expect(response).to_not be_successful
       expect(response.status).to eq(400)
 
-      expect(sub[:errors]).to eq("Tea has already been taken")
+      expect(sub[:errors]).to eq("Tea subscription already exists for this tea & customer")
     end
 
     it 'shows an error if tea does not exist' do
