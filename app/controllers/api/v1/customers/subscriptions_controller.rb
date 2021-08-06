@@ -4,7 +4,7 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
 
   def index
     if @customer.subscriptions.count == 0
-      render json: { message: "No subscriptions found" }, status: :ok
+      render json: { errors: "No subscriptions found" }, status: :ok
     else
       render json: SubscriptionSerializer.new(@customer.subscriptions)
     end
