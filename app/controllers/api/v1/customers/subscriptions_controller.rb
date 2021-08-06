@@ -3,30 +3,19 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
   before_action :set_tea, only: %i[create]
 
   def index
-    if @customer.subscriptions.count == 0
-      render json: { errors: "No subscriptions found" }, status: :ok
-    else
-      render json: SubscriptionSerializer.new(@customer.subscriptions)
-    end
+    return no_subs if @customer.subscriptions.count == 0
+    render json: SubscriptionSerializer.new(@customer.subscriptions)
   end
 
   def create
-    sub = @customer.subscriptions.new(subscription_params)
-    if @customer.teas.find_by(id: params[:tea_id])
-      render json: { errors: "You're already subscribed to this tea" }, status: :bad_request
-    elsif sub.save
-      render json: SubscriptionSerializer.new(sub), status: :created
-    else
-      render json: { errors: sub.errors.full_messages.to_sentence }, status: :bad_request
-    end
+    sub = @customer.subscriptions.create!(subscription_params)
+    render json: SubscriptionSerializer.new(sub), status: :created
   end
 
   def update
     sub = @customer.subscriptions.find(params[:id])
-    sub.update!(subscription_params)
+    sub.update(subscription_params)
     render json: SubscriptionSerializer.new(sub), status: :ok
-    rescue StandardError => e
-      render json: { errors: e }, status: :bad_request
   end
 
   private

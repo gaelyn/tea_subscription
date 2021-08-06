@@ -9,6 +9,7 @@ A RESTful Rails API for a Tea Subscription Service.
 [**Setup**](#setup) |
 [**File Structure**](#file-structure) |
 [**Endpoints**](#endpoints) |
+[**Error Handling**](#error-handling) |
 [**Testing**](#testing) |
 [**Developer**](#developer)
 
@@ -57,7 +58,6 @@ Example Response:
       "id": "9",
       "type": "subscription",
       "attributes": {
-          "id": 9,
           "customer_id": 1,
           "tea_id": 5,
           "title": "Subscription for delicious tea",
@@ -74,11 +74,15 @@ Example Response:
 | `PATCH` | `/api/v1/customers/:customer_id/subscriptions/:id`| Updates the customer's subscription status to inactive |
 
 Example Request:
-The URI includes the customer id and the subscription id so this request requires the status to be sent in the params.  
+Needs to include status in the request body.  
 Status is an enum so it can either be sent as 1 or "inactive". Inversely, to activate an inactive subscription the status could be sent as 0 or "active".  
-URL: `http://localhost:3000/api/v1/customers/1/subscriptions/3`  
-Params: `status: 1`
-
+Note: If you wish to update any other attributes, they can also be sent in the request body.
+```
+body:
+{
+  "status": 1,
+}
+```
 Example Response:
 ```
 {
@@ -86,7 +90,6 @@ Example Response:
       "id": "3",
       "type": "subscription",
       "attributes": {
-          "id": 3,
           "customer_id": 1,
           "tea_id": 3,
           "title": "Ut praesentium magni.",
@@ -116,7 +119,6 @@ Example Response:
             "id": "3",
             "type": "subscription",
             "attributes": {
-                "id": 3,
                 "customer_id": 1,
                 "tea_id": 3,
                 "title": "Ut praesentium magni.",
@@ -129,7 +131,6 @@ Example Response:
             "id": "6",
             "type": "subscription",
             "attributes": {
-                "id": 6,
                 "customer_id": 1,
                 "tea_id": 1,
                 "title": "Subscription for delicious tea",
@@ -141,6 +142,51 @@ Example Response:
     ]
 }
 ```
+## Error Handling
+Examples of errors and how they're formatted:
+- If customer does not exist
+`GET /api/v1/customers/<id of non-existent customer>/subscriptions`
+```
+{
+  "errors": "Cannot find customer"
+}
+```
+- If customer has no subscriptions (active or inactive)
+`GET /api/v1/customers/<id of customer with no subscriptions>/subscriptions`
+```
+{
+  "errors": "No subscriptions found"
+}
+```
+- Field is missing from request body
+`POST /api/v1/customers/:customer_id/subscriptions`
+```
+{
+  "errors": "Frequency can't be blank
+}
+```
+- Customer already has a subscription for tea
+`POST /api/v1/customers/:customer_id/subscriptions`
+```
+{
+  "errors": "Tea has already been taken"
+}
+```
+- Customer tries to subscribe to a tea that doesn't exist
+`POST /api/v1/customers/:customer_id/subscriptions`
+```
+{
+  "errors": "Cannot find tea"
+}
+```
+- Update is sent with invalid status enum
+`PATCH /api/v1/customers/:customer_id/subscriptions/:subscription_id`
+```
+{
+  "errors": "'10' is not a valid status"
+}
+```
+
 
 ## Testing
 - Tested with Rspec
