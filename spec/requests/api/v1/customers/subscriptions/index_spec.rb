@@ -51,7 +51,7 @@ RSpec.describe 'See Customer Subscriptions' do
       expect(response).to be_successful
       expect(response.status).to eq(200)
 
-      expect(subs[:message]).to eq("No subscriptions found")
+      expect(subs[:errors]).to eq("No subscriptions found")
     end
   end
 end
